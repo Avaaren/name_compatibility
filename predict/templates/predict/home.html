@@ -1,14 +1,15 @@
 {% extends 'predict/base.html' %}
-
+{% load static %}
 {% block title %} Home page {% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'predict/css/predict.css' %}">
 <h1>Тут вы выбираете имена</h1>
 <div class = 'man'>
     <span><input type="text" placeholder='Man'></span>
 </div>
 <div class = 'man'>
-    <span><input type="text" placeholder='WMan'></span>
+    <span><input type="text" placeholder='Woman'></span>
 </div>
 
 {% endblock %}

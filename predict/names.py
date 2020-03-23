@@ -1,4 +1,4 @@
-from .models import Relationship
+from .models import MaleName, FemaleName
 from django.utils.text import slugify
 
 first_names_male = (
@@ -75,10 +75,8 @@ first_names_female = (
 )
 
 
-def create(male_name=first_names_male, female_name=first_names_female):
+def create(female_name=first_names_female):
     objs = []
-    for male_name in first_names_male:
-        for female_name in first_names_female:
-            slug = f'{male_name}-{female_name}'
-            objs.append(Relationship(male_name=male_name, female_name=female_name, slug=slugify(slug, allow_unicode=True)))
-    Relationship.objects.bulk_create(objs)
+    for female_name in first_names_female:
+        objs.append(FemaleName(name=female_name))
+    FemaleName.objects.bulk_create(objs)
