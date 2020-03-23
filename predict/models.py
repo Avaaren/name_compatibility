@@ -11,3 +11,17 @@ class Relationship(models.Model):
 
     def __str__(self):
         return f'{self.male_name} -- {self.female_name}'
+
+
+class MaleName(models.Model):
+    name = models.CharField(max_length=25)
+
+    def __str__(self):
+        return f'{self.name}'
+
+
+class FemaleName(models.Model):
+    name = models.CharField(max_length=25)
+
+    def __str__(self):
+        return f'{self.name}'
