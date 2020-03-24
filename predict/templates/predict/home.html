@@ -5,11 +5,27 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'predict/css/predict.css' %}">
 <h1>Тут вы выбираете имена</h1>
-<div class = 'man'>
-    <span><input type="text" placeholder='Man'></span>
-</div>
-<div class = 'man'>
-    <span><input type="text" placeholder='Woman'></span>
+<div class="container">
+    <div id='man'>
+        <div class="search">
+            <span><input type="text" placeholder='Man' id='man-search-field'></span>
+        </div>
+        <div id=result_man>
+        </div>
+    </div>
+
+    <div id='woman'>
+        <div class="search">
+            <span><input type="text" placeholder='Woman' id='woman-search-field'></span>
+        </div>
+        <div id=result_woman>
+        </div>
+    </div>
+
 </div>
 
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+
+<script src="{% static 'predict/js/scripts.js' %}"></script>
 {% endblock %}

@@ -4,6 +4,7 @@
     box-sizing: border-box;
 }
 
-div.man, div.woman{
-    display: inline-block;
+.container{
+    background-color:rgb(195, 187, 187);
+    display: flex; 
 }
