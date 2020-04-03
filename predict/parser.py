@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup 
 from pytils.translit import slugify
 from datetime import datetime
-from threading import Thread
+from multiprocessing import Pool
 
 
 def benchmark(func):
@@ -50,90 +50,94 @@ def get_names():
             total_values.append(man_name)
             total_values.append(slugify(_str))
             result.append(total_values)
-        
-    print(len(result))
     return result
 
+def get_urls():
+    url_list = []
+    names_list = get_names()
+    for name in names_list:
+        url = f'https://goroskop365.ru/sovmestimost-imen/{name[2]}/'
+        url_list.append(url)
+    return url_list
 
 responses = []
-def get_responses():
+def get_responses(first, last):
+    
     url_list = get_names()
-    for url in url_list:
-        response = 
-
-
-
-@benchmark
-def get_relationship_type(pre_slice, post_slice, relationships):
-    counter = 1
-
-    total_values = get_names()
-    # print(total_values)
-    for value in total_values[pre_slice:post_slice]:
-        name = []
-        URL = f'https://goroskop365.ru/sovmestimost-imen/{value[2]}/'
-
+    for url in url_list[first:last]:
+        URL = f'https://goroskop365.ru/sovmestimost-imen/{url[2]}/'
         response = requests.get(URL)
-        if response.status_code != 200:
-            # total_values.remove(value[2])
-            continue
-        else:
-            soup = BeautifulSoup(response.text, 'html.parser')
-            header = soup.find('div', class_='sovmestimost').find('br').text
-            percent_text = soup.find('div', class_='compatibility-percentage')
-            # percent_in_marriage = percent_in_love.next_sibling.text
+        responses.append(response)
+    
+# def threading_urls():
+#     thread_list = []
+#     first = 0
+#     length = 18762
 
-            percent_text = percent_text.text
-            percent_text = percent_text.split('\n')
-            percent_in_love = percent_text[1].split('–')[1].strip().split('%')[0].strip()
-            percent_in_marriage = percent_text[2].split('–')[1].strip().split('%')[0].strip()
-            name.append(value[0])
-            name.append(value[1])
-            name.append(value[2])
-            name.append(percent_in_love)
-            name.append(percent_in_marriage)
-            name.append(header)
-            body = soup.find('div', class_='sovmestimost')
-            for s in body.next_siblings:
-                if s.name == None:
-                    continue
-                elif s.name == 'p':
-                    name.append(s.text)
-                else:
-                    break
-            relationships.append(name)
-            print(f'{counter} - {name[5]}')
-            counter += 1
-    # print(relationships)
-    return relationships
+#     for i in range(3):
+#         if length < 2000:
+#             t = Thread(target=get_responses, args=(first, first+length))
+#         else:
+#             t = Thread(target=get_responses, args=(first, first+2000))
+#         thread_list.append(t)
+#         t.start()
+#         first += 2000
+#         length -= 2000
+
+#     for thread in thread_list:
+#         thread.join()
+#     # print(responses)
+#     return responses
 
 @benchmark
-def return_relations():
+def get_relationship_type():
+    counter = 1
+    page_info = []
+    relationships = []
 
-    thread_list = []
+    # responses_list = threading_urls()
+    for response in responses_list:
+        try:
+            if response.status_code != 200:
+                continue
+            else:
+                
+                soup = BeautifulSoup(response.text, 'html.parser')
+                header = soup.find('div', class_='sovmestimost').find('br').text
 
-    first_arg = 0
-    length = 18763
-    for i in range(10):
-        
-        t = Thread(target=get_relationship_type,
-                name=f'Thread{i}',
-                args=(first_arg, first_arg+10, relationships))
-        thread_list.append(t)
-        t.start()
-        first_arg += 10
+                percent_text = soup.find('div', class_='compatibility-percentage')
+                percent_text = percent_text.text
+                percent_text = percent_text.split('\n')
 
-    for t in thread_list:
-        t.join()
+                percent_in_love = percent_text[1].split('–')[1].strip().split('%')[0].strip()
+                percent_in_marriage = percent_text[2].split('–')[1].strip().split('%')[0].strip()
 
-    print(len(relationships))
-    # print(relationships)
-    # get_relationship_type(0, 100)
-    ss = relationships
-    print(type(ss))
-    return ss
+                header_with_names = soup.find_all('h2')[1].text.strip()
+                header_with_names = header_with_names.split(' ')
 
+                male_name = header_with_names[::-1][0]
+                female_name = header_with_names[::-1][2]
+                slug = slugify(f'{female_name}-{male_name}')
 
-s = return_relations()
-# get_names()
-print(type(s))
+                page_info.append(female_name)
+                page_info.append(male_name)
+                page_info.append(slug)
+                page_info.append(percent_in_love)
+                page_info.append(percent_in_marriage)
+                page_info.append(header)
+
+                body = soup.find('div', class_='sovmestimost')
+                for s in body.next_siblings:
+                    if s.name == None:
+                        continue
+                    elif s.name == 'p':
+                        page_info.append(s.text)
+                    else:
+                        break
+                
+                relationships.append(page_info)
+                counter += 1
+        except Exception as exception:
+            print(type(exception).__name__)
+            continue
+    return relationships
