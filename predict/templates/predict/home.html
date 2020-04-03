@@ -5,10 +5,14 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'predict/css/predict.css' %}">
 <h1>Тут вы выбираете имена</h1>
+<form action="{% url 'predict:home' %}" method="POST">
+{% csrf_token %}
 <div class="container">
+
+
     <div id='man'>
         <div class="search">
-            <span><input type="text" placeholder='Man' id='man-search-field'></span>
+            <span>{{ form.male_name }}</span>
         </div>
         <div id=result_man>
         </div>
@@ -16,14 +20,24 @@
 
     <div id='woman'>
         <div class="search">
-            <span><input type="text" placeholder='Woman' id='woman-search-field'></span>
+            <span>{{ form.female_name }}</span>
         </div>
         <div id=result_woman>
         </div>
     </div>
+ 
 
 </div>
+<button type="submit">send</button>
+<h2>
+    {% if obj %}
+        {{ obj }}
+    {% else %}
+        No obj
+    {% endif %}
+</h2>
 
+</form>
 <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
     crossorigin="anonymous"></script>
 
