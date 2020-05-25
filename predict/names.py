@@ -1,5 +1,6 @@
-from .models import MaleName, FemaleName, Relationship
 import csv
+
+from .models import Relationship
 
 
 def create():
