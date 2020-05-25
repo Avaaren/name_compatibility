@@ -6,36 +6,53 @@
 <link rel="stylesheet" href="{% static 'predict/css/predict.css' %}">
 <h1>Тут вы выбираете имена</h1>
 <form action="{% url 'predict:home' %}" method="POST">
-{% csrf_token %}
-<div class="container">
+    {% csrf_token %}
+    <div class="container">
 
 
-    <div id='man'>
-        <div class="search">
-            <span>{{ form.male_name }}</span>
+        <div id='man'>
+            <div class="search">
+                <span>{{ form.male_name }}</span>
+            </div>
+            <div id=result_man>
+            </div>
         </div>
-        <div id=result_man>
+
+        <div id='woman'>
+            <div class="search">
+                <span>{{ form.female_name }}</span>
+            </div>
+            <div id=result_woman>
+            </div>
         </div>
+        <div id="submit">
+            <div class="search">
+                <span>
+                <input type="submit" class='send_button' value="Send">
+                </span>
+            </div>
+        </div>
+
     </div>
 
-    <div id='woman'>
-        <div class="search">
-            <span>{{ form.female_name }}</span>
-        </div>
-        <div id=result_woman>
-        </div>
-    </div>
- 
 
-</div>
-<button type="submit">send</button>
-<h2>
-    {% if obj %}
-        {{ obj }}
-    {% else %}
-        No obj
-    {% endif %}
-</h2>
+        {% if prediction %}
+        <div class="compatibility">
+            <h3>Совместимость имен {{ prediction.female_name }} и {{ prediction.male_name }}</h3>
+            <h3>Тип взаимотношений - "{{ prediction.header }}"</h3>
+            <br>
+            <p class='percentage'>Совместимость в любви - {{ prediction.percent_in_love }}%</p>
+            <p class='percentage'>Совместимость в браке - {{ prediction.percent_in_married }}%</p>
+            <br>
+            <p class='description'>{{ prediction.description|center:10}}</p>
+        </div>
+        {% else %}
+        <div class="compatibility">
+            <h2>Выберите имена чтобы узнать совместимость!</h2>
+        </div>
+
+        {% endif %}
+
 
 </form>
 <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
