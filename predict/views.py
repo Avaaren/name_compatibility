@@ -1,8 +1,7 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 
-from .names import create
 from .models import (
     Relationship,
     MaleName,
@@ -19,22 +18,25 @@ class HomePageView(View):
 
     def post(self, request):
         form = RelationshipForm(request.POST)
+        print(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            result = get_object_or_404(
+            predict = get_object_or_404(
                 Relationship,
                 male_name=cd.get('male_name'),
                 female_name=cd.get('female_name')
             )
-            print(result.get_absolute_url())
-        return redirect(result.get_absolute_url())
+            print(predict.get_absolute_url())
+        return redirect(predict.get_absolute_url())
 
 
 class PredictView(View):
 
     def get(self, request, name_slug):
-        obj = get_object_or_404(Relationship, slug=name_slug)
-        return render(request, 'predict/home.html',  {'obj': obj})
+        form = RelationshipForm()
+        prediction = get_object_or_404(Relationship, slug=name_slug)
+        return render(request, 'predict/home.html',  {'prediction': prediction,
+                                                      'form': form})
 
 
 def ajax_search_male(request):
