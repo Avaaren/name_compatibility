@@ -5,6 +5,44 @@
 }
 
 .container{
-    background-color:rgb(195, 187, 187);
     display: flex; 
+}
+
+p.result {
+    border: 1px solid;
+    border-radius: 25px;
+    padding: 3px;
+    margin-bottom: 1px;
+    width: 95%;
+    text-align: center;
+}
+
+p.result:hover{
+    background-color: aliceblue;
+    cursor: pointer;
+}
+.search input[type='text'], input[type='submit']{
+    border: 2px solid blue;
+    padding: 10px;
+    margin-right: 10px;
+    text-align: center;
+    outline: none;
+    border-radius:25px;
+}
+
+.send_button {
+    background-color: grey;
+    padding:10px;
+    border-radius: 25px;
+    width: 150px;
+    border: 2px solid blue;
+}
+
+
+
+.compatibility h3 {
+    color: rgb(49, 45, 45);
+}
+.description {
+    text-align:justify;         
 }
