@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $('#man-search-field').on('input', function (e) {
         $.ajax({
-            url: "ajax_search_male/",
+            url: '/ajax_search_male/',
             data: {
                 'search_request': $(this).val(),
             },
@@ -9,7 +9,7 @@ $(document).ready(function () {
             success: function (data) {
                 $('#result_man').empty();
                 if (data.result_set.length == 0) {
-                    $('#result_man').append($('<p>').text('empty'));
+                    $('#result_man').append($('<p>', { 'class': 'result' }).text('empty'));
                 }
                 else {
                     data.result_set.forEach(function (item) {
@@ -24,7 +24,7 @@ $(document).ready(function () {
 
     $('#woman-search-field').on('input', function (e) {
         $.ajax({
-            url: "ajax_search_female/",
+            url: "/ajax_search_female/",
             data: {
                 'search_request': $(this).val(),
             },
@@ -32,7 +32,7 @@ $(document).ready(function () {
             success: function (data) {
                 $('#result_woman').empty();
                 if (data.result_set.length == 0) {
-                    $('#result_woman').append($('<p>').text('empty'));
+                    $('#result_woman').append($('<p>', { 'class': 'result' }).text('empty'));
                 }
                 else {
                     data.result_set.forEach(function (item) {
