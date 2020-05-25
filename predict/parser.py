@@ -99,7 +99,7 @@ def get_page_data(response):
 
         body = soup.find('div', class_='sovmestimost')
         for s in body.next_siblings:
-            if s.name == None:
+            if s.name is None:
                 continue
             elif s.name == 'p':
                 page_info.append(s.text)
@@ -136,7 +136,7 @@ def write_csv(page_data):
                 page_data['description'])
             )
             print(page_data['slug'])
-        except:
+        except TypeError:
             pass
 
 
